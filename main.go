@@ -9,10 +9,12 @@ import (
 	"syscall"
 
 	"github.com/gin-gonic/gin"
+	"github.com/melsincostan/borders/auth/key"
 	"github.com/melsincostan/borders/pages/admin"
 	"github.com/melsincostan/borders/pages/stats"
 	"github.com/melsincostan/borders/setup"
 	"github.com/melsincostan/borders/static"
+	"github.com/melsincostan/envconfig"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -39,6 +41,11 @@ func main() {
 		log.Fatalf("Error opening the database: %s", err.Error())
 	}
 
+	jwtKeyConfig, err := envconfig.Parse[key.Config]()
+	if err != nil {
+		log.Fatalf("Could not load the JWT Key configuration: %s", err)
+	}
+
 	router := gin.Default()
 
 	tmpl := template.New("pages")
@@ -58,13 +65,17 @@ func main() {
 
 		router.SetHTMLTemplate(tmpl)
 
-		if err := setup.Install(router.Group("/setup"), db); err != nil {
+		if err := setup.Install(router.Group("/setup"), db, jwtKeyConfig); err != nil {
 			log.Fatalf("Could not install setup endpoints: %s", err.Error())
 		}
 	} else if err != nil {
 		log.Fatalf("Could not check for setup status: %s", err)
 	} else {
 		router.SetHTMLTemplate(tmpl)
+	}
+
+	if err := key.Load(jwtKeyConfig); err != nil {
+		log.Fatalf("Error loading JWT Signing key: %s", err)
 	}
 
 	static.Install(router.Group("/static"))

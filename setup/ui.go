@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/melsincostan/borders/auth/key"
 	"github.com/melsincostan/borders/db/country"
 	"github.com/melsincostan/borders/db/models"
 	"github.com/melsincostan/borders/db/transport"
@@ -67,7 +68,7 @@ func show() gin.HandlerFunc {
 	}
 }
 
-func run(db *gorm.DB) gin.HandlerFunc {
+func run(db *gorm.DB, jwtKeyConfig *key.Config) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var params setupDTO
 
