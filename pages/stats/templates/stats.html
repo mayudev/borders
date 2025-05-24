@@ -1,21 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Borders - Statistics</title>
-    <link rel="stylesheet" href="/static/style/stats.css">
-</head>
-<body>
-    <p>
-        Out of {{ .TotalCrossings }} border crossings, there were {{ .TotalBorderChecks }} border checks. That's {{ .CrossingCheckPer }}%.<br>
-        Out of those {{ .TotalBorderChecks }} border checks, {{ .TotalIdChecks }} involved checking identification of the contributor to this page. That's {{ .CheckIDPer }}% of checks, or {{ .CrossingIdPer }}% of border crossings.
-    </p>
-    <p>
-        The country with the most border checks was: {{ .WorstCountry.Item.Name }}, with a {{ .WorstCountryPer }}% rate of border checks.
-    </p>
-    <p>
-        The means of transport with the most border checks was: {{ .WorstTransport.Item.Name }}, with a {{ .WorstTransportPer }}% rate of border checks.
-    </p>
-</body>
+    <link rel="stylesheet" href="/static/style/stats.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Border crossing statistics</h1>
+      <div class="card">
+        <p>
+          Out of {{ .TotalCrossings }} border crossings, there were {{
+          .TotalBorderChecks }} border checks. That's {{ .CrossingCheckPer
+          }}%.<br />
+          Out of those {{ .TotalBorderChecks }} border checks, {{ .TotalIdChecks
+          }} involved checking identification of the contributor to this page.
+          That's {{ .CheckIDPer }}% of checks, or {{ .CrossingIdPer }}% of
+          border crossings.
+        </p>
+        <p>
+          The country with the most border checks was: {{
+          .WorstCountry.Item.Name }}, with a {{ .WorstCountryPer }}% rate of
+          border checks.
+        </p>
+        <p>
+          The means of transport with the most border checks was: {{
+          .WorstTransport.Item.Name }}, with a {{ .WorstTransportPer }}% rate of
+          border checks.
+        </p>
+      </div>
+    </main>
+  </body>
 </html>
