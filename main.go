@@ -4,8 +4,12 @@ import (
 	"errors"
 	"html/template"
 	"log"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/gin-gonic/gin"
+	"github.com/melsincostan/borders/pages/admin"
 	"github.com/melsincostan/borders/pages/stats"
 	"github.com/melsincostan/borders/setup"
 	"github.com/melsincostan/borders/static"
@@ -14,7 +18,20 @@ import (
 	"gorm.io/gorm/logger"
 )
 
+func handleSignals(done chan bool) {
+	signals := make(chan os.Signal, 1)
+	signal.Notify(signals, syscall.SIGTERM, syscall.SIGINT, syscall.SIGABRT)
+	s := <-signals
+	log.Printf("Received a(n) '%s' signal, quitting...", s.String())
+	done <- true
+}
+
 func main() {
+
+	done := make(chan bool, 1)
+
+	go handleSignals(done)
+
 	db, err := gorm.Open(sqlite.Open("borders.db"), &gorm.Config{
 		Logger: logger.Discard,
 	})
@@ -28,6 +45,10 @@ func main() {
 
 	if err := stats.Template(tmpl); err != nil {
 		log.Fatalf("Error setting up statistics template files: %s", err)
+	}
+
+	if err := admin.Template(tmpl); err != nil {
+		log.Fatalf("Error setting up administrative template files: %s", err)
 	}
 
 	if err := setup.IsSetup(db); errors.Is(err, setup.ErrNotSetup) {
@@ -48,6 +69,11 @@ func main() {
 
 	static.Install(router.Group("/static"))
 	stats.Install(router.Group("/"), db)
+	admin.Install(router.Group("/admin"), db)
 
-	router.Run(":8080")
+	go router.Run(":8080")
+	<-done
+	rdb, _ := db.DB()
+	rdb.Close()
+	log.Printf("goodbye!")
 }

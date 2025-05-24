@@ -57,11 +57,10 @@ func ensureKey(key string) gin.HandlerFunc {
 	}
 }
 
-func show(key string) gin.HandlerFunc {
+func show() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		ctx.HTML(http.StatusOK, "setup.html", pageInfo{
-			Key:        key,
 			Transports: transport.Default,
 			Countries:  country.Default,
 		})

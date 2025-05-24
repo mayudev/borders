@@ -1,0 +1,38 @@
+input {
+    font-size: 1rem;
+    border-radius: .25rem;
+    padding: .1rem .25rem;
+    transition: all var(--transition-duration) ease-in-out;
+}
+
+input:not(input[type=submit]) {
+    border: 1px solid light-dark(var(--black), var(--white));
+    background-color: light-dark(var(--white), var(--grey));
+}
+
+input:not(input[type=submit]):hover, input:not(input[type=submit]):focus {
+    border: 1px solid var(--orange);
+}
+
+input:hover {
+    box-shadow: 0px 0px 2px var(--orange);
+}
+
+input[type=submit] {
+    cursor: pointer;
+    border: none;
+    background-color: var(--orange);
+    color: var(--black);
+}
+
+form {
+    width: fit-content;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: .1rem;
+}
+
+input[type=text], input[type=password] {
+    margin-bottom: .5rem;
+}

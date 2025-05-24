@@ -31,7 +31,7 @@ func Install(group *gin.RouterGroup, db *gorm.DB) (err error) {
 	log.Printf("Navigate to http://127.0.0.1:8080/setup/%s (or where the application is configured to be available) to finish setting up the application", k)
 
 	group.Use(ensureKey(k), notTwice())
-	group.GET(":key", show(k))
+	group.GET(":key", show())
 	group.POST(":key", run(db))
 	return
 }

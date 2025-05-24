@@ -1,6 +1,7 @@
 @import url("/static/style/common.css");
+@import url("/static/style/form-common.css");
 
-h1, .list-thing {
+.list-thing {
     text-align: center;
     font-size: 1.2rem;
 } 
@@ -18,52 +19,4 @@ h1, .list-thing {
     margin: auto;
     margin-top: .25rem;
     text-align: left;
-}
-
-form {
-    width: fit-content;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    gap: .1rem;
-}
-
-.card {
-    padding: 1rem;
-    border: none;
-    background-color: color-mix(in srgb, light-dark(var(--black), var(--white)) 10%, transparent);
-    border-radius: .5rem;
-}
-
-input{
-    font-size: 1rem;
-}
-
-input[type=text], input[type=password] {
-    margin-bottom: .5rem;
-}
-
-input {
-    border-radius: .25rem;
-    padding: .1rem .25rem;
-    transition: all var(--transition-duration) ease-in-out;
-}
-
-input:not(input[type=submit]) {
-    border: 1px solid light-dark(var(--black), var(--white));
-}
-
-input:not(input[type=submit]):hover, input:not(input[type=submit]):focus {
-    border: 1px solid var(--orange);
-}
-
-input:hover {
-    box-shadow: 0px 0px 2px var(--orange);
-}
-
-input[type=submit] {
-    cursor: pointer;
-    border: none;
-    background-color: var(--orange);
-    color: var(--black);
 }
