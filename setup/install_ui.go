@@ -38,7 +38,7 @@ func Install(group *gin.RouterGroup, db *gorm.DB, jwtKeyConfig *key.Config) (err
 
 	group.Use(ensureKey(k), notTwice())
 	group.GET(":key", show())
-	group.POST(":key", run(db, jwtKeyConfig))
+	group.POST(":key", run(db))
 	return
 }
 
