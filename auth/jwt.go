@@ -56,7 +56,7 @@ func Check(signedToken string) (err error) {
 	if err != nil {
 		return fmt.Errorf("%w (nbf)", err)
 	}
-	if nbf.Before(time.Now()) {
+	if nbf.After(time.Now()) {
 		return ErrTooNew
 	}
 
@@ -64,7 +64,7 @@ func Check(signedToken string) (err error) {
 	if err != nil {
 		return fmt.Errorf("%w (nbf)", err)
 	}
-	if iat.Before(time.Now()) {
+	if iat.After(time.Now()) {
 		return ErrIssuedInTheFuture
 	}
 
