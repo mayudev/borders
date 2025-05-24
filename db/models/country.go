@@ -11,11 +11,3 @@ type Country struct {
 type CountryBase struct {
 	Name string
 }
-
-var DefaultCountries = []CountryBase{
-	{Name: "Germany"},
-	{Name: "France"},
-	{Name: "Poland"},
-	{Name: "Austria"},
-	{Name: "Switzerland"},
-}

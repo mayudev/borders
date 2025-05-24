@@ -11,12 +11,12 @@ type Stats struct {
 	TotalCrossings    int64
 	TotalBorderChecks int64
 	TotalIdChecks     int64
-	WorstCountry      models.Country
-	WorstTransport    models.Transport
+	WorstCountry      Worst[models.Country]
+	WorstTransport    Worst[models.Transport]
 }
 
 type Worst[T any] struct {
-	T
+	Item  T `gorm:"embedded"`
 	Ratio uint64
 }
 
@@ -50,6 +50,14 @@ func GetStats(db *gorm.DB) (s *Stats, e error) {
 
 	if err := db.Raw(WorstCountryQuery).Scan(&worstCountry).Error; err != nil {
 		return nil, fmt.Errorf("couldn't get worst country: %w", err)
+	}
+
+	s = &Stats{
+		TotalCrossings:    totalCrossings,
+		TotalBorderChecks: totalBorderChecks,
+		TotalIdChecks:     totalIdChecks,
+		WorstCountry:      worstCountry,
+		WorstTransport:    worstTransport,
 	}
 	return
 }
