@@ -4,14 +4,6 @@
 .list-thing {
     text-align: center;
     font-size: 1.2rem;
-} 
-
-.grid {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 100%;
-    gap: 1rem;
 }
 
 .grid ul {

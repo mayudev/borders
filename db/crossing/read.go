@@ -21,8 +21,8 @@ type Worst[T any] struct {
 }
 
 const (
-	WorstTransportQuery = "SELECT transports.*, COUNT(DISTINCT(tbc.id)) / COUNT(DISTINCT(tc.id)) AS ratio FROM transports LEFT JOIN crossings AS tc ON tc.transport_id = transports.id LEFT JOIN crossings AS tbc ON tbc.transport_id = transports.id AND tbc.border_check = 1 GROUP BY transports.id ORDER BY ratio DESC LIMIT 1"
-	WorstCountryQuery   = "SELECT countries.*, COUNT(DISTINCT(tbc.id)) / COUNT(DISTINCT(tc.id)) AS ratio FROM countries LEFT JOIN crossings AS tc ON tc.country_id = countries.id LEFT JOIN crossings AS tbc ON tbc.country_id = countries.id AND tbc.border_check = 1 GROUP BY countries.id ORDER BY ratio DESC LIMIT 1"
+	WorstTransportQuery = "SELECT transports.*, CAST(COUNT(DISTINCT(tbc.id)) AS REAL) / COUNT(DISTINCT(tc.id)) AS ratio FROM transports LEFT JOIN crossings AS tc ON tc.transport_id = transports.id LEFT JOIN crossings AS tbc ON tbc.transport_id = transports.id AND tbc.border_check = 1 GROUP BY transports.id ORDER BY ratio DESC LIMIT 1"
+	WorstCountryQuery   = "SELECT countries.*, CAST(COUNT(DISTINCT(tbc.id)) AS REAL) / COUNT(DISTINCT(tc.id)) AS ratio FROM countries LEFT JOIN crossings AS tc ON tc.country_id = countries.id LEFT JOIN crossings AS tbc ON tbc.country_id = countries.id AND tbc.border_check = 1 GROUP BY countries.id ORDER BY ratio DESC LIMIT 1"
 )
 
 func GetStats(db *gorm.DB) (s *Stats, e error) {

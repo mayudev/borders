@@ -1,0 +1,36 @@
+{{ define "leaderboard" }}
+<table>
+            <thead>
+                <tr>
+                    <th>Score</th>
+                    <th>Name</th>
+                    <th>Crossings</th>
+                    <th>Border Checks</th>
+                    <th>Paper Checks</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range . }}
+                <tr>
+                    <td>{{printf "%.1f" .Ratio }}</td>
+                    <td>
+                        {{.Item.Name}}
+                    </td>
+                    <td>
+                        {{.Crossings}}
+                    </td>
+                    <td>
+                        {{.Checks}}
+                    </td>
+                    <td>
+                        {{.PapersChecks}}
+                    </td>
+                </tr>
+                {{ else }}
+                <tr>
+                    <td colspan="5">There is no data yet.</td>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
+{{ end }}

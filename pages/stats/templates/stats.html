@@ -12,23 +12,37 @@
       <div class="card">
         <p>
           Out of {{ .TotalCrossings }} border crossings, there were {{
-          .TotalBorderChecks }} border checks. That's {{ .CrossingCheckPer
-          }}%.<br />
+          .TotalBorderChecks }} border checks. That's {{ printf "%.1f"
+          .CrossingCheckPer }}%.<br />
           Out of those {{ .TotalBorderChecks }} border checks, {{ .TotalIdChecks
           }} involved checking identification of the contributor to this page.
-          That's {{ .CheckIDPer }}% of checks, or {{ .CrossingIdPer }}% of
-          border crossings.
+          That's {{ printf "%.1f" .CheckIDPer }}% of checks, or {{ printf "%.1f"
+          .CrossingIdPer }}% of border crossings.
         </p>
         <p>
           The country with the most border checks was: {{
-          .WorstCountry.Item.Name }}, with a {{ .WorstCountryPer }}% rate of
-          border checks.
+          .WorstCountry.Item.Name }}, with a {{ printf "%.1f" .WorstCountryPer
+          }}% rate of border checks.
         </p>
         <p>
           The means of transport with the most border checks was: {{
-          .WorstTransport.Item.Name }}, with a {{ .WorstTransportPer }}% rate of
-          border checks.
+          .WorstTransport.Item.Name }}, with a {{ printf "%.1f"
+          .WorstTransportPer }}% rate of border checks.
         </p>
+      </div>
+      <div class="grid">
+        <div>
+          <h2>Countries leaderboard</h2>
+          <div class="card">
+            {{ template "leaderboard" .CountryLeaderboard }}
+          </div>
+        </div>
+        <div>
+          <h2>Transportation leaderboard</h2>
+          <div class="card">
+            {{ template "leaderboard" .TransportLeaderboard }}
+          </div>
+        </div>
       </div>
     </main>
   </body>
