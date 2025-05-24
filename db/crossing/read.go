@@ -17,7 +17,7 @@ type Stats struct {
 
 type Worst[T any] struct {
 	Item  T `gorm:"embedded"`
-	Ratio uint64
+	Ratio float32
 }
 
 const (

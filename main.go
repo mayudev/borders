@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
+	"github.com/melsincostan/borders/pages/stats"
 	"github.com/melsincostan/borders/setup"
 	"github.com/melsincostan/borders/static"
 	"gorm.io/driver/sqlite"
@@ -15,7 +16,7 @@ import (
 
 func main() {
 	db, err := gorm.Open(sqlite.Open("borders.db"), &gorm.Config{
-		Logger: logger.Default,
+		Logger: logger.Discard,
 	})
 	if err != nil {
 		log.Fatalf("Error opening the database: %s", err.Error())
@@ -23,23 +24,30 @@ func main() {
 
 	router := gin.Default()
 
-	static.Install(router.Group("/static"))
-
 	tmpl := template.New("pages")
 
-	if err := setup.Templates(tmpl); err != nil {
-		log.Fatalf("%s", err)
+	if err := stats.Template(tmpl); err != nil {
+		log.Fatalf("Error setting up statistics template files: %s", err)
 	}
 
-	router.SetHTMLTemplate(tmpl)
-
 	if err := setup.IsSetup(db); errors.Is(err, setup.ErrNotSetup) {
+		if err := setup.Templates(tmpl); err != nil {
+			log.Fatalf("Error setting up the setup templates files%s", err)
+		}
+
+		router.SetHTMLTemplate(tmpl)
+
 		if err := setup.Install(router.Group("/setup"), db); err != nil {
 			log.Fatalf("Could not install setup endpoints: %s", err.Error())
 		}
 	} else if err != nil {
 		log.Fatalf("Could not check for setup status: %s", err)
+	} else {
+		router.SetHTMLTemplate(tmpl)
 	}
+
+	static.Install(router.Group("/static"))
+	stats.Install(router.Group("/"), db)
 
 	router.Run(":8080")
 }
