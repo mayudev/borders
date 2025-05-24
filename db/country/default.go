@@ -8,4 +8,9 @@ var Default = []models.CountryBase{
 	{Name: "Poland"},
 	{Name: "Austria"},
 	{Name: "Switzerland"},
+	{Name: "Luxembourg"},
+	{Name: "Denmark"},
+	{Name: "Czech Republic"},
+	{Name: "Netherlands"},
+	{Name: "Belgium"},
 }

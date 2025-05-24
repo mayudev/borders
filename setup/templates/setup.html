@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Borders - Setup</title>
+    <script>
+      function eot(id) {
+        const elem = document.getElementById(id);
+        if (elem == null) {
+          throw new Error(`Element '${id}' could not be found`);
+        }
+        return elem;
+      }
+      document.addEventListener("DOMContentLoaded", () => {
+        const submit = eot("submit");
+        const password = eot("password");
+        const password_c = eot("password-confirm");
+        const message = eot("message");
+
+        submit.addEventListener("click", (e) => {
+          if (password.value != password_c.value) {
+            e.preventDefault();
+            message.innerText =
+              "The password and confirmation aren't matching.";
+          }
+        });
+      });
+    </script>
+    <link rel="stylesheet" href="/static/style/setup.css">
+  </head>
+  <body>
+    <h1>Welcome to the "Borders" setup. Please create an user account that will be able to manage the application.</h1>
+    <form action="/setup/{{ .Key }}" method="post" class="card">
+      <label for="username">Username</label>
+      <input type="text" name="username" id="username" placeholder="username" /><br />
+
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" placeholder="password" /><br />
+
+      <label for="password-confirm">Password confirmation</label>
+      <input
+        type="password"
+        name="password-confirm"
+        id="password-confirm"
+        placeholder="password (again)"
+      /><br />
+      <span id="message"></span>
+
+      <input type="submit" value="Submit" id="submit" />
+    </form>
+    <p class="list-thing">
+        In addition to this account, the database will be populated with default values.
+    </p>
+
+    <div class="grid">
+        <div class="card">
+            Following countries will be added:
+            <ul>
+                {{ range .Countries }}
+                <li>{{ .Name }}</li>
+                {{ end }}
+            </ul>
+        </div>
+        <div class="card">
+            Following means of transport will be added:
+            <ul>
+                {{ range .Transports }}
+                <li>{{ .Name }}</li>
+                {{ end }}
+            </ul>
+        </div>
+    </div>
+  </body>
+</html>

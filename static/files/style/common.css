@@ -1,0 +1,10 @@
+:root {
+    font-family: sans-serif;
+    font-size: 1rem;
+    color-scheme: light dark;
+    --black: oklch(14.5% 0 0);
+    --white: oklch(98.5% 0 0);
+    --orange: oklch(70.5% 0.213 47.604);
+
+    --transition-duration: 150ms; /* if only it were that fast... */
+}

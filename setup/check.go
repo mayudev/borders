@@ -9,6 +9,9 @@ import (
 )
 
 func IsSetup(db *gorm.DB) (err error) {
+	if err := db.AutoMigrate(&models.Setup{}); err != nil {
+		return fmt.Errorf("couldn't ensure presence of the table: %w", err)
+	}
 	var setup models.Setup
 	if err := db.Model(&models.Setup{}).First(&setup).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
