@@ -9,7 +9,7 @@ func Update(db *gorm.DB, id uint, cb models.CountryBase) (e error) {
 	c := models.Country{
 		CountryBase: cb,
 	}
-	if err := db.Model(&models.Country{}).Updates(c).Error; err != nil {
+	if err := db.Model(&models.Country{}).Where("id = ?", id).Updates(c).Error; err != nil {
 		return err
 	}
 	return

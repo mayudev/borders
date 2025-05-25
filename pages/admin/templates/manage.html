@@ -1,0 +1,50 @@
+{{define "manage"}}
+<table>
+  <thead>
+    <tr>
+      <th>Number</th>
+      <th>Name</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{ range .Items }}
+    <tr>
+      <td>{{ .ID }}</td>
+      <td>
+        <form action="{{ $.Base }}/{{ $.Type }}/{{ .ID }}/edit" method="post">
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            value="{{ .Name }}"
+          />
+          <input type="submit" value="Save" />
+        </form>
+      </td>
+      <td>
+        <form action="{{ $.Base }}/{{ $.Type }}/{{ .ID }}/delete" method="post">
+          <input type="submit" value="Delete" class="delete" />
+        </form>
+      </td>
+    </tr>
+    {{ else }}
+    <tr>
+      <td colspan="3">No content yet.</td>
+    </tr>
+    {{ end }}
+    <tr>
+      <td>&nbsp;</td>
+      <td><form action="{{ .Base }}/{{ .Type }}/create" method="post">
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+          />
+          <input type="submit" value="Save" />
+        </form></td>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+{{end}}

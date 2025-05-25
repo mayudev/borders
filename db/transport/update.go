@@ -5,11 +5,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func Update(db *gorm.DB, tb models.TransportBase) (e error) {
+func Update(db *gorm.DB, id uint, tb models.TransportBase) (e error) {
 	t := models.Transport{
 		TransportBase: tb,
 	}
-	if err := db.Model(&models.Transport{}).Updates(t).Error; err != nil {
+	if err := db.Model(&models.Transport{}).Where("id = ?", id).Updates(t).Error; err != nil {
 		return err
 	}
 	return

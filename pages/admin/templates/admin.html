@@ -10,11 +10,11 @@
   <body>
     <a href="{{ .Logout }}" class="adm">log out</a>
     <h1>Add a border crossing</h1>
-    <form action="{{ .CreateCrossing }}" method="post" class="card">
+    <form action="{{ .CreateCrossing }}" method="post" class="card crossing mainform">
       <div class="select">
         <label for="country">Crossing into</label>
         <select name="country" id="country" required>
-          {{ range .Countries }}
+          {{ range .ManageCountries.Items }}
           <option value="{{ .ID }}">{{ .Name }}</option>
           {{ end }}
         </select>
@@ -22,7 +22,7 @@
       <div class="select">
         <label for="transport">Via</label>
         <select name="transport" id="transport" required>
-          {{ range .Transports }}
+          {{ range .ManageTransports.Items }}
           <option value="{{ .ID }}">{{ .Name }}</option>
           {{ end }}
         </select>
@@ -41,5 +41,16 @@
       </div>
       <input type="submit" value="Save">
     </form>
+
+    <div class="grid">
+        <div>
+            <h2>Manage Countries</h2>
+            <div class="card">{{ template "manage" .ManageCountries}}</div>
+        </div>
+        <div>
+            <h2>Manage Means of transport</h2>
+            <div class="card">{{ template "manage" .ManageTransports}}</div>
+        </div>
+    </div>
   </body>
 </html>

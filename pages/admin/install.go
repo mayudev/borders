@@ -34,4 +34,10 @@ func Install(group *gin.RouterGroup, db *gorm.DB) {
 	group.POST("/login", login(db, group.BasePath()))
 	group.GET("/logout", authmw, logout(group.BasePath()))
 	group.POST(crossingSubmit, authmw, createCrossing(db, group.BasePath()))
+	group.POST("/country/:id/edit", authmw, edit(db, group.BasePath(), "country"))
+	group.POST("/transport/:id/edit", authmw, edit(db, group.BasePath(), "transport"))
+	group.POST("/country/:id/delete", authmw, delete(db, group.BasePath(), "country"))
+	group.POST("/transport/:id/delete", authmw, delete(db, group.BasePath(), "transport"))
+	group.POST("/country/create", authmw, create(db, group.BasePath(), "country"))
+	group.POST("/transport/create", authmw, create(db, group.BasePath(), "transport"))
 }

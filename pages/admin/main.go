@@ -13,13 +13,23 @@ import (
 	"gorm.io/gorm"
 )
 
+type manageable interface {
+	models.Country | models.Transport
+}
+
 type adminObj struct {
-	Countries      []models.Country
-	Transports     []models.Transport
-	CreateCrossing string
-	BorderValue    string
-	PapersValue    string
-	Logout         string
+	CreateCrossing   string
+	BorderValue      string
+	PapersValue      string
+	Logout           string
+	ManageCountries  manageObj[models.Country]
+	ManageTransports manageObj[models.Transport]
+}
+
+type manageObj[T manageable] struct {
+	Items []T
+	Base  string
+	Type  string
 }
 
 func main(db *gorm.DB, base string) gin.HandlerFunc {
@@ -40,8 +50,16 @@ func main(db *gorm.DB, base string) gin.HandlerFunc {
 		}
 
 		ctx.HTML(http.StatusOK, "admin.html", adminObj{
-			Countries:      countries,
-			Transports:     transports,
+			ManageCountries: manageObj[models.Country]{
+				Items: countries,
+				Base:  base,
+				Type:  "country",
+			},
+			ManageTransports: manageObj[models.Transport]{
+				Items: transports,
+				Base:  base,
+				Type:  "transport",
+			},
 			CreateCrossing: createCrossing,
 			BorderValue:    borderValue,
 			PapersValue:    papersValue,

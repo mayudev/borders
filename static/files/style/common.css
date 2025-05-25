@@ -6,6 +6,7 @@
     --grey: oklch(26.9% 0 0);
     --white: oklch(98.5% 0 0);
     --orange: oklch(70.5% 0.213 47.604);
+    --red: oklch(63.7% 0.237 25.331);
 
     --transition-duration: 150ms; /* if only it were that fast... */
 
