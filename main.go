@@ -42,6 +42,11 @@ func main() {
 		log.Fatalf("Error opening the database: %s", err.Error())
 	}
 
+	appConfig, err := envconfig.Parse[Config]()
+	if err != nil {
+		log.Fatalf("Could not load the app configuration")
+	}
+
 	jwtKeyConfig, err := envconfig.Parse[key.Config]()
 	if err != nil {
 		log.Fatalf("Could not load the JWT Key configuration: %s", err)
@@ -70,7 +75,7 @@ func main() {
 
 		router.SetHTMLTemplate(tmpl)
 
-		if err := setup.Install(router.Group("/setup"), db, jwtKeyConfig); err != nil {
+		if err := setup.Install(router.Group("/setup"), db, jwtKeyConfig, appConfig.Port); err != nil {
 			log.Fatalf("Could not install setup endpoints: %s", err.Error())
 		}
 	} else if err != nil {
@@ -87,7 +92,8 @@ func main() {
 	stats.Install(router.Group("/"), db)
 	admin.Install(router.Group("/admin"), db)
 
-	go router.Run(":8080")
+	go router.Run(appConfig.Addr())
+	log.Printf("Application is now listening on '%s'", appConfig.Addr())
 	<-done
 	rdb, _ := db.DB()
 	rdb.Close()

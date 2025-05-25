@@ -24,7 +24,7 @@ func Templates(tmpl *template.Template) (err error) {
 	return
 }
 
-func Install(group *gin.RouterGroup, db *gorm.DB, jwtKeyConfig *key.Config) (err error) {
+func Install(group *gin.RouterGroup, db *gorm.DB, jwtKeyConfig *key.Config, port uint) (err error) {
 	k, err := setupKey()
 	if err != nil {
 		return err
@@ -34,7 +34,7 @@ func Install(group *gin.RouterGroup, db *gorm.DB, jwtKeyConfig *key.Config) (err
 		return fmt.Errorf("could not create a JWT key: %w", err)
 	}
 
-	log.Printf("Navigate to http://127.0.0.1:8080/setup/%s (or where the application is configured to be available) to finish setting up the application", k)
+	log.Printf("Navigate to http://127.0.0.1:%d/setup/%s (or where the application is configured to be available) to finish setting up the application", port, k)
 
 	group.Use(ensureKey(k), notTwice())
 	group.GET(":key", show())
