@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Borders - Admin</title>
     <link rel="stylesheet" href="/static/style/admin.css" />
+    <script src="/static/script/ensureCheck.js"></script>
   </head>
   <body>
     <h1>Add a border crossing</h1>
     <form action="{{ .CreateCrossing }}" method="post" class="card">
       <div class="select">
         <label for="country">Crossing into</label>
-        <select name="country" id="country">
+        <select name="country" id="country" required>
           {{ range .Countries }}
           <option value="{{ .ID }}">{{ .Name }}</option>
           {{ end }}
@@ -19,7 +20,7 @@
       </div>
       <div class="select">
         <label for="transport">Via</label>
-        <select name="transport" id="transport">
+        <select name="transport" id="transport" required>
           {{ range .Transports }}
           <option value="{{ .ID }}">{{ .Name }}</option>
           {{ end }}
