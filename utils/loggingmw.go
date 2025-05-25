@@ -14,7 +14,7 @@ func Logging() gin.HandlerFunc {
 		total := time.Now().Sub(start)
 		log.Printf("%d %s %s %s \"%s\"", ctx.Writer.Status(), total.String(), ctx.RemoteIP(), ctx.Request.Method, ctx.Request.RequestURI)
 		for i, e := range ctx.Errors {
-			log.Printf("Error #%02d: %s", i, e.Error())
+			log.Printf("Error #%02d: %s", i+1, e.Error())
 		}
 	}
 }
