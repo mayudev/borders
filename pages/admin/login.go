@@ -26,7 +26,8 @@ func login(db *gorm.DB, base string) gin.HandlerFunc {
 		var params loginDTO
 
 		if err := ctx.ShouldBind(&params); err != nil {
-			ctx.AbortWithError(http.StatusBadRequest, err)
+			ctx.Error(err)
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, utils.ErrJSON("missing parameters"))
 			return
 		}
 
