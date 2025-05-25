@@ -13,7 +13,7 @@
     <form action="{{ .CreateCrossing }}" method="post" class="card crossing mainform">
       <div class="select">
         <label for="country">Crossing into</label>
-        <select name="country" id="country" required>
+        <select name="country" id="country">
           {{ range .ManageCountries.Items }}
           <option value="{{ .ID }}">{{ .Name }}</option>
           {{ end }}
@@ -21,7 +21,7 @@
       </div>
       <div class="select">
         <label for="transport">Via</label>
-        <select name="transport" id="transport" required>
+        <select name="transport" id="transport">
           {{ range .ManageTransports.Items }}
           <option value="{{ .ID }}">{{ .Name }}</option>
           {{ end }}
@@ -29,7 +29,7 @@
       </div>
       <div class="select">
         <label for="time">Time</label>
-        <input type="datetime-local" name="time" id="time" />
+        <input type="datetime-local" name="time" id="time" required />
       </div>
       <div class="fc">
         <input type="checkbox" name="check[]" id="border-check" value="{{ .BorderValue }}" />
