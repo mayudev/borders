@@ -9,8 +9,10 @@ services:
     environment:
       # the time zone of the administrator should be here
       - TZ=Europe/Paris
+      - DB_FILE=/data/borders.db
+      - JWT_KEY_FILE=/data/key.bin
       # these values are examples, with the default value set.
       # - SERVE_PORT=8080
-      # - DB_FILE=./borders.db
-      # - JWT_KEY_FILE=./key.bin
       # - JWT_KEY_LENGTH=16
+    volumes:
+      - ./data:/data:rw
