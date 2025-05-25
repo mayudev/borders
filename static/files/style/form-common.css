@@ -1,16 +1,16 @@
-input {
+input, select {
     font-size: 1rem;
     border-radius: .25rem;
     padding: .1rem .25rem;
     transition: all var(--transition-duration) ease-in-out;
 }
 
-input:not(input[type=submit]) {
+input:not(input[type=submit]), select {
     border: 1px solid light-dark(var(--black), var(--white));
     background-color: light-dark(var(--white), var(--grey));
 }
 
-input:not(input[type=submit]):hover, input:not(input[type=submit]):focus {
+input:not(input[type=submit]):hover, input:not(input[type=submit]):focus, select:hover {
     border: 1px solid var(--orange);
 }
 

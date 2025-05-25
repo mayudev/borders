@@ -1,7 +1,6 @@
 package stats
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -9,6 +8,7 @@ import (
 	"github.com/melsincostan/borders/db/crossing"
 	"github.com/melsincostan/borders/db/models"
 	"github.com/melsincostan/borders/db/transport"
+	"github.com/melsincostan/borders/utils"
 	"gorm.io/gorm"
 )
 
@@ -28,21 +28,21 @@ func show(db *gorm.DB) gin.HandlerFunc {
 		stats, err := crossing.GetStats(db)
 		if err != nil {
 			ctx.Error(err)
-			ctx.AbortWithStatusJSON(http.StatusInternalServerError, errjson("there was an issue retrieving the overview statistics"))
+			ctx.AbortWithStatusJSON(http.StatusInternalServerError, utils.ErrJSON("there was an issue retrieving the overview statistics"))
 			return
 		}
 
 		countryLeaderboard, err := country.Leaderboard(db)
 		if err != nil {
 			ctx.Error(err)
-			ctx.AbortWithStatusJSON(http.StatusInternalServerError, errjson("there was an issue retrieving the country leaderboard"))
+			ctx.AbortWithStatusJSON(http.StatusInternalServerError, utils.ErrJSON("there was an issue retrieving the country leaderboard"))
 			return
 		}
 
 		transportLeaderboard, err := transport.Leaderboard(db)
 		if err != nil {
 			ctx.Error(err)
-			ctx.AbortWithStatusJSON(http.StatusInternalServerError, errjson("there was an issue retrieving the transport leaderboard"))
+			ctx.AbortWithStatusJSON(http.StatusInternalServerError, utils.ErrJSON("there was an issue retrieving the transport leaderboard"))
 			return
 		}
 
@@ -56,11 +56,5 @@ func show(db *gorm.DB) gin.HandlerFunc {
 			CountryLeaderboard:   countryLeaderboard,
 			TransportLeaderboard: transportLeaderboard,
 		})
-	}
-}
-
-func errjson(message string) map[string]string {
-	return map[string]string{
-		"error": fmt.Sprintf("%s - please check the server logs", message),
 	}
 }

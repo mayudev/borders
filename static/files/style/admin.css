@@ -1,0 +1,29 @@
+@import url("/static/style/common.css");
+@import url("/static/style/form-common.css");
+
+input[type=checkbox] {
+    accent-color: var(--orange);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    margin: auto;
+}
+
+form .select {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: .5rem;
+    margin-top: .25rem;
+    align-items: center;
+}
+
+form .select> :first-child {
+    text-align: right;
+}
+
+input[type=submit], .fc {
+    margin-top: 1rem;
+}

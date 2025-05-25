@@ -22,11 +22,16 @@ func Template(tmpl *template.Template) (err error) {
 	return
 }
 
+const (
+	crossingSubmit = "/crossing"
+)
+
 func Install(group *gin.RouterGroup, db *gorm.DB) {
 	loginpath := fmt.Sprintf("%s/login", strings.TrimSuffix(group.BasePath(), "/"))
 	authmw := auth.MW(group.BasePath(), loginpath)
-	group.GET("", authmw, main(db))
+	group.GET("", authmw, main(db, group.BasePath()))
 	group.GET("/login", loginForm())
 	group.POST("/login", login(db, group.BasePath()))
 	group.GET("/logout", authmw, logout(group.BasePath(), loginpath))
+	group.POST(crossingSubmit, authmw, createCrossing(db, group.BasePath()))
 }

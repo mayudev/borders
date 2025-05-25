@@ -12,7 +12,7 @@ var (
 )
 
 func Create(db *gorm.DB, cb models.CrossingBase, countryID, transportID uint) (c *models.Crossing, e error) {
-	if cb.PapersCheck && !cb.PapersCheck {
+	if cb.PapersCheck && !cb.BorderCheck {
 		return nil, ErrIdCheck
 	}
 	c = &models.Crossing{

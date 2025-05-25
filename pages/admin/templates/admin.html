@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Borders - Admin</title>
+    <link rel="stylesheet" href="/static/style/admin.css" />
+  </head>
+  <body>
+    <h1>Add a border crossing</h1>
+    <form action="{{ .CreateCrossing }}" method="post" class="card">
+      <div class="select">
+        <label for="country">Crossing into</label>
+        <select name="country" id="country">
+          {{ range .Countries }}
+          <option value="{{ .ID }}">{{ .Name }}</option>
+          {{ end }}
+        </select>
+      </div>
+      <div class="select">
+        <label for="transport">Via</label>
+        <select name="transport" id="transport">
+          {{ range .Transports }}
+          <option value="{{ .ID }}">{{ .Name }}</option>
+          {{ end }}
+        </select>
+      </div>
+      <div class="select">
+        <label for="time">Time</label>
+        <input type="datetime-local" name="time" id="time" />
+      </div>
+      <div class="fc">
+        <input type="checkbox" name="check[]" id="border-check" value="{{ .BorderValue }}" />
+        <label for="border-check">Crossing involved a border check</label>
+      </div>
+      <div>
+        <input type="checkbox" name="check[]" id="papers-check" value="{{ .PapersValue }}" />
+        <label for="papers-check">Own papers were checked</label>
+      </div>
+      <input type="submit" value="Save">
+    </form>
+  </body>
+</html>

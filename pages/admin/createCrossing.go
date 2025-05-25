@@ -1,0 +1,67 @@
+package admin
+
+import (
+	"net/http"
+	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/melsincostan/borders/db/crossing"
+	"github.com/melsincostan/borders/db/models"
+	"github.com/melsincostan/borders/utils"
+	"gorm.io/gorm"
+)
+
+type createCrossingDTO struct {
+	Country   uint     `form:"country" binding:"required"`
+	Transport uint     `form:"transport" binding:"required"`
+	RawTime   string   `form:"time" binding:"required"`
+	Check     []string `form:"check[]" binding:"required"`
+}
+
+const (
+	timeFormat  = "2006-01-02T15:04"
+	borderValue = "border"
+	papersValue = "papers"
+)
+
+func createCrossing(db *gorm.DB, base string) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		var params createCrossingDTO
+		if err := ctx.ShouldBind(&params); err != nil {
+			ctx.Error(err)
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, utils.ErrJSON("couldn't parse request"))
+			return
+		}
+
+		actualTime, err := time.ParseInLocation(timeFormat, params.RawTime, time.Local)
+		if err != nil {
+			ctx.Error(err)
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, utils.ErrJSON("couldn't parse time"))
+			return
+		}
+
+		borderCheck := lookup(params.Check, borderValue)
+		papersCheck := lookup(params.Check, papersValue)
+
+		if _, err := crossing.Create(db, models.CrossingBase{
+			When:        actualTime,
+			BorderCheck: borderCheck,
+			PapersCheck: papersCheck,
+		}, params.Country, params.Transport); err != nil {
+			ctx.Error(err)
+			ctx.AbortWithStatusJSON(http.StatusInternalServerError, utils.ErrJSON("couldn't create crossing"))
+			return
+		}
+
+		ctx.Redirect(http.StatusFound, base)
+	}
+}
+
+func lookup(arr []string, val string) (ok bool) {
+	for _, arrval := range arr {
+		if arrval == val {
+			return true
+		}
+	}
+	return false
+}
