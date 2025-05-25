@@ -47,9 +47,9 @@ func login(db *gorm.DB, base string) gin.HandlerFunc {
 	}
 }
 
-func logout(base, login string) gin.HandlerFunc {
+func logout(base string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		ctx.SetCookie(auth.CookieKey, "", 0, base, "", false, false)
-		ctx.Redirect(http.StatusFound, login)
+		ctx.Redirect(http.StatusFound, "/")
 	}
 }

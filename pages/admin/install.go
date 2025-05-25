@@ -32,6 +32,6 @@ func Install(group *gin.RouterGroup, db *gorm.DB) {
 	group.GET("", authmw, main(db, group.BasePath()))
 	group.GET("/login", loginForm())
 	group.POST("/login", login(db, group.BasePath()))
-	group.GET("/logout", authmw, logout(group.BasePath(), loginpath))
+	group.GET("/logout", authmw, logout(group.BasePath()))
 	group.POST(crossingSubmit, authmw, createCrossing(db, group.BasePath()))
 }

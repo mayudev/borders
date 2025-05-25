@@ -1,4 +1,5 @@
 @import url("/static/style/common.css");
+@import url("/static/style/corner-button.css");
 
 .card {
     width: fit-content;
