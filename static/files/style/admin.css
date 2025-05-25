@@ -1,6 +1,7 @@
 @import url("/static/style/common.css");
 @import url("/static/style/form-common.css");
 @import url("/static/style/corner-button.css");
+@import url("/static/style/table-common.css");
 
 input[type=checkbox] {
     accent-color: var(--orange);

@@ -1,25 +1,8 @@
 @import url("/static/style/common.css");
 @import url("/static/style/corner-button.css");
+@import url("/static/style/table-common.css");
 
 .card {
     width: fit-content;
     margin: auto;
-}
-
-table {
-    border-collapse: collapse;
-}
-
-table, tr{
-    border-top: 1px solid light-dark(var(--black), var(--white));
-    border-bottom: 1px solid light-dark(var(--black), var(--white));
-}
-
-td, th {
-    text-align: center;
-    padding: .1rem .75rem;
-}
-
-tbody tr:nth-child(even) {
-    background-color: color-mix(in srgb, light-dark(var(--grey), var(--white)) 20%, transparent);
 }
