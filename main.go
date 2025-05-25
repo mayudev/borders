@@ -14,6 +14,7 @@ import (
 	"github.com/melsincostan/borders/pages/stats"
 	"github.com/melsincostan/borders/setup"
 	"github.com/melsincostan/borders/static"
+	"github.com/melsincostan/borders/utils"
 	"github.com/melsincostan/envconfig"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -48,7 +49,9 @@ func main() {
 
 	gin.SetMode(gin.ReleaseMode)
 
-	router := gin.Default()
+	router := gin.New()
+
+	router.Use(gin.Recovery(), utils.Logging())
 
 	tmpl := template.New("pages")
 
