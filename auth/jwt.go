@@ -35,51 +35,53 @@ func Create() (signedToken string, err error) {
 	return token.SignedString(key.Get())
 }
 
-func Check(signedToken string) (err error) {
+func Check(signedToken string) (exp time.Time, err error) {
 	token, err := jwt.Parse(signedToken, key.Func())
 	if err != nil || !token.Valid {
-		return fmt.Errorf("could not parse token: %w", err)
+		return exp, fmt.Errorf("could not parse token: %w", err)
 	}
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
-		return ErrUnparseableClaims
+		return exp, ErrUnparseableClaims
 	}
 
-	exp, err := claims.GetExpirationTime()
+	texp, err := claims.GetExpirationTime()
 	if err != nil {
-		return fmt.Errorf("%w (exp)", err)
+		return exp, fmt.Errorf("%w (exp)", err)
 	}
-	if exp.Before(time.Now()) {
-		return ErrExpired
+	if texp.Before(time.Now()) {
+		return exp, ErrExpired
 	}
 
 	nbf, err := claims.GetNotBefore()
 	if err != nil {
-		return fmt.Errorf("%w (nbf)", err)
+		return exp, fmt.Errorf("%w (nbf)", err)
 	}
 	if nbf.After(time.Now()) {
-		return ErrTooNew
+		return exp, ErrTooNew
 	}
 
 	iat, err := claims.GetIssuedAt()
 	if err != nil {
-		return fmt.Errorf("%w (nbf)", err)
+		return exp, fmt.Errorf("%w (nbf)", err)
 	}
 	if iat.After(time.Now()) {
-		return ErrIssuedInTheFuture
+		return exp, ErrIssuedInTheFuture
 	}
 
 	iss, err := claims.GetIssuer()
 	if err != nil {
-		return fmt.Errorf("%w (iss)", err)
+		return exp, fmt.Errorf("%w (iss)", err)
 	}
 	if iss != issuer {
-		return ErrWrongIssuer
+		return exp, ErrWrongIssuer
 	}
 
 	if exp.Sub(iat.Time) > Validity {
-		return ErrValidityTooLong
+		return exp, ErrValidityTooLong
 	}
+
+	exp = texp.Time
 
 	return
 }

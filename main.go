@@ -46,6 +46,8 @@ func main() {
 		log.Fatalf("Could not load the JWT Key configuration: %s", err)
 	}
 
+	gin.SetMode(gin.ReleaseMode)
+
 	router := gin.Default()
 
 	tmpl := template.New("pages")
