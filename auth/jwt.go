@@ -10,8 +10,9 @@ import (
 )
 
 const (
-	validity = 1 * time.Hour
-	issuer   = "borders-app-auth"
+	Validity  = 1 * time.Hour
+	CookieKey = "borders-admin-auth"
+	issuer    = "borders-app-auth"
 )
 
 var (
@@ -29,7 +30,7 @@ func Create() (signedToken string, err error) {
 		"iss": issuer,
 		"iat": ct.Unix(),
 		"nbf": ct.Add(-(5 * time.Second)).Unix(),
-		"exp": ct.Add(validity).Unix(),
+		"exp": ct.Add(Validity).Unix(),
 	})
 	return token.SignedString(key.Get())
 }
@@ -76,7 +77,7 @@ func Check(signedToken string) (err error) {
 		return ErrWrongIssuer
 	}
 
-	if exp.Sub(iat.Time) > validity {
+	if exp.Sub(iat.Time) > Validity {
 		return ErrValidityTooLong
 	}
 
