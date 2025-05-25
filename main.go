@@ -35,16 +35,16 @@ func main() {
 
 	go handleSignals(done)
 
-	db, err := gorm.Open(sqlite.Open("borders.db"), &gorm.Config{
+	appConfig, err := envconfig.Parse[Config]()
+	if err != nil {
+		log.Fatalf("Could not load the app configuration")
+	}
+
+	db, err := gorm.Open(sqlite.Open(appConfig.DBFile), &gorm.Config{
 		Logger: logger.Discard,
 	})
 	if err != nil {
 		log.Fatalf("Error opening the database: %s", err.Error())
-	}
-
-	appConfig, err := envconfig.Parse[Config]()
-	if err != nil {
-		log.Fatalf("Could not load the app configuration")
 	}
 
 	jwtKeyConfig, err := envconfig.Parse[key.Config]()
