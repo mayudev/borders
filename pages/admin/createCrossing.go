@@ -15,7 +15,7 @@ type createCrossingDTO struct {
 	Country   uint     `form:"country" binding:"required"`
 	Transport uint     `form:"transport" binding:"required"`
 	RawTime   string   `form:"time" binding:"required"`
-	Check     []string `form:"check[]" binding:"required"`
+	Check     []string `form:"check[]"`
 }
 
 const (
