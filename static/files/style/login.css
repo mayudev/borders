@@ -1,2 +1,17 @@
 @import url("/static/style/common.css");
 @import url("/static/style/form-common.css");
+
+.center {
+    text-align: center;
+}
+
+a, a:visited {
+    color: color-mix(in srgb, light-dark(var(--black), var(--white)) 50%, transparent);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition-duration) ease-in-out;
+}
+
+a:hover{
+    color: var(--orange);
+}
