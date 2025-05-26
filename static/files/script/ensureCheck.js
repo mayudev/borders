@@ -15,10 +15,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   pc.addEventListener("change", () => {
     if (pc.checked) {
-        bc.checked = true;
-        bc.disabled = true;
-    } else {
-        bc.disabled = false;
+      bc.checked = true;
     }
-  })
+  });
+
+  bc.addEventListener("change", () => {
+    if (pc.checked) {
+      bc.checked = true;
+    }
+  });
 });
