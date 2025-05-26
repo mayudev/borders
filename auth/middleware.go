@@ -9,9 +9,9 @@ import (
 )
 
 const (
-	expiryContextKey  = "jwt-expiry-time"
-	SubjectContextKey = "jwt-subject"
-	refreshWhen       = (Validity / 4) // refresh at the earliest when the token is at 3/4 of the validity period
+	expiryContextKey = "jwt-expiry-time"
+	UIDContextKey    = "jwt-uid"
+	refreshWhen      = (Validity / 4) // refresh at the earliest when the token is at 3/4 of the validity period
 )
 
 func Auth(base, login string) gin.HandlerFunc {
@@ -31,7 +31,7 @@ func Auth(base, login string) gin.HandlerFunc {
 			return
 		} else {
 			ctx.Set(expiryContextKey, exp)
-			ctx.Set(SubjectContextKey, sub)
+			ctx.Set(UIDContextKey, sub)
 		}
 
 		ctx.Next()
@@ -53,7 +53,7 @@ func Refresh(base string) gin.HandlerFunc {
 			return
 		}
 
-		rsub, ok := ctx.Get(SubjectContextKey)
+		rsub, ok := ctx.Get(UIDContextKey)
 		if !ok {
 			log.Printf("subject key not set in context")
 			return

@@ -29,9 +29,9 @@ const (
 
 func createCrossing(db *gorm.DB, base string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		rusr, ok := ctx.Get(auth.SubjectContextKey)
+		rusr, ok := ctx.Get(auth.UIDContextKey)
 		if !ok {
-			ctx.Error(fmt.Errorf("could not find subject in context (key: '%s')", auth.SubjectContextKey))
+			ctx.Error(fmt.Errorf("could not find subject in context (key: '%s')", auth.UIDContextKey))
 			ctx.AbortWithStatusJSON(http.StatusInternalServerError, utils.ErrJSON("could not find user ID in context"))
 			return
 		}
