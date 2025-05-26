@@ -42,4 +42,5 @@ func Install(group *gin.RouterGroup, db *gorm.DB) {
 	group.POST("/country/create", authmw, refreshmw, create(db, group.BasePath(), "country"))
 	group.POST("/transport/create", authmw, refreshmw, create(db, group.BasePath(), "transport"))
 	group.POST("/change-password", authmw, refreshmw, changePW(db, group.BasePath()))
+	group.POST("/create-user", authmw, refreshmw, createUser(db))
 }

@@ -70,7 +70,12 @@
         <h2>Change password</h2>
         <form action="{{ .ChangePassword }}" method="post" class="card">
           <label for="old">Old password</label>
-          <input type="password" name="old" id="old" placeholder="old password" />
+          <input
+            type="password"
+            name="old"
+            id="old"
+            placeholder="old password"
+          />
           <label for="password">New password</label>
           <input
             type="password"
@@ -87,6 +92,15 @@
             placeholder="new password (again)"
           />
           <span id="message"></span>
+
+          <input type="submit" value="Submit" id="submit" />
+        </form>
+      </div>
+      <div>
+        <h2>Create a user</h2>
+        <form action="{{ .CreateUser }}" method="post" class="card">
+          <label for="name">Username</label>
+          <input type="text" name="name" id="name" placeholder="username" />
 
           <input type="submit" value="Submit" id="submit" />
         </form>

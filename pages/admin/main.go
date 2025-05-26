@@ -20,6 +20,7 @@ type manageable interface {
 type adminObj struct {
 	CreateCrossing   string
 	ChangePassword   string
+	CreateUser       string
 	BorderValue      string
 	PapersValue      string
 	Logout           string
@@ -37,6 +38,7 @@ func main(db *gorm.DB, base string) gin.HandlerFunc {
 	createCrossing := fmt.Sprintf("%s%s", strings.TrimSuffix(base, "/"), crossingSubmit)
 	logout := fmt.Sprintf("%s/logout", strings.TrimSuffix(base, "/"))
 	changePassword := fmt.Sprintf("%s/change-password", strings.TrimSuffix(base, "/"))
+	cUser := fmt.Sprintf("%s/create-user", strings.TrimSuffix(base, "/"))
 	return func(ctx *gin.Context) {
 		countries, err := country.Read(db)
 		if err != nil {
@@ -64,6 +66,7 @@ func main(db *gorm.DB, base string) gin.HandlerFunc {
 			},
 			CreateCrossing: createCrossing,
 			ChangePassword: changePassword,
+			CreateUser:     cUser,
 			BorderValue:    borderValue,
 			PapersValue:    papersValue,
 			Logout:         logout,
