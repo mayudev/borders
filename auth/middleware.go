@@ -9,8 +9,9 @@ import (
 )
 
 const (
-	expiryContextKey = "jwt-expiry-time"
-	refreshWhen      = (Validity / 4) // refresh at the earliest when the token is at 3/4 of the validity period
+	expiryContextKey  = "jwt-expiry-time"
+	SubjectContextKey = "jwt-subject"
+	refreshWhen       = (Validity / 4) // refresh at the earliest when the token is at 3/4 of the validity period
 )
 
 func Auth(base, login string) gin.HandlerFunc {
@@ -22,13 +23,15 @@ func Auth(base, login string) gin.HandlerFunc {
 			return
 		}
 
-		if exp, err := Check(cookie); err != nil {
+		if sub, exp, err := Check(cookie); err != nil {
+			log.Default().Printf("err not nil!: %s", err)
 			ctx.Abort()
 			ctx.SetCookie(CookieKey, "", 0, base, "", false, false)
 			ctx.Redirect(http.StatusFound, login)
 			return
 		} else {
 			ctx.Set(expiryContextKey, exp)
+			ctx.Set(SubjectContextKey, sub)
 		}
 
 		ctx.Next()
@@ -46,12 +49,24 @@ func Refresh(base string) gin.HandlerFunc {
 
 		exp, ok := rexp.(time.Time)
 		if !ok {
-			log.Printf("expiry in context is not a time value")
+			log.Printf("expiry in context is not a time value (%#v)", rexp)
+			return
+		}
+
+		rsub, ok := ctx.Get(SubjectContextKey)
+		if !ok {
+			log.Printf("subject key not set in context")
+			return
+		}
+
+		sub, ok := rsub.(uint)
+		if !ok {
+			log.Printf("subject is not an uint value")
 			return
 		}
 
 		if time.Now().After(exp.Add(-refreshWhen)) {
-			token, err := Create()
+			token, err := Create(sub)
 			if err != nil {
 				log.Printf("wanted to refresh token but got an error: %s", err)
 				return

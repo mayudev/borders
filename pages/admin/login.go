@@ -30,14 +30,14 @@ func login(db *gorm.DB, base string) gin.HandlerFunc {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, utils.ErrJSON("missing parameters"))
 			return
 		}
-
-		if err := user.Authenticate(db, params.Name, params.Password); err != nil {
+		usr, err := user.Authenticate(db, params.Name, params.Password)
+		if err != nil {
 			ctx.Error(err)
 			ctx.AbortWithStatusJSON(http.StatusForbidden, utils.ErrJSON("could not authenticate user"))
 			return
 		}
 
-		token, err := auth.Create()
+		token, err := auth.Create(usr.ID)
 		if err != nil {
 			ctx.Error(err)
 			ctx.AbortWithStatusJSON(http.StatusInternalServerError, utils.ErrJSON("could not create token"))

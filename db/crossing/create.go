@@ -11,7 +11,7 @@ var (
 	ErrIdCheck = errors.New("a crossing with an ID check implies a border check")
 )
 
-func Create(db *gorm.DB, cb models.CrossingBase, countryID, transportID uint) (c *models.Crossing, e error) {
+func Create(db *gorm.DB, cb models.CrossingBase, countryID, transportID, userID uint) (c *models.Crossing, e error) {
 	if cb.PapersCheck && !cb.BorderCheck {
 		return nil, ErrIdCheck
 	}
@@ -19,6 +19,7 @@ func Create(db *gorm.DB, cb models.CrossingBase, countryID, transportID uint) (c
 		CrossingBase: cb,
 		CountryID:    countryID,
 		TransportID:  transportID,
+		UserID:       userID,
 	}
 
 	if err := db.Model(&models.Crossing{}).Create(c).Error; err != nil {

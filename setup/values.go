@@ -2,7 +2,7 @@ package setup
 
 import "errors"
 
-const version = 1
+const version = 2
 
 var (
 	ErrNotSetup     = errors.New("database isn't set up")

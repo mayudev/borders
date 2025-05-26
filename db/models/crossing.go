@@ -13,6 +13,8 @@ type Crossing struct {
 	Country     Country
 	TransportID uint
 	Transport   Transport
+	UserID      uint
+	User        User
 }
 
 type CrossingBase struct {

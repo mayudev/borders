@@ -1,10 +1,13 @@
 package admin
 
 import (
+	"errors"
+	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/melsincostan/borders/auth"
 	"github.com/melsincostan/borders/db/crossing"
 	"github.com/melsincostan/borders/db/models"
 	"github.com/melsincostan/borders/utils"
@@ -26,6 +29,22 @@ const (
 
 func createCrossing(db *gorm.DB, base string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		rusr, ok := ctx.Get(auth.SubjectContextKey)
+		if !ok {
+			ctx.Error(fmt.Errorf("could not find subject in context (key: '%s')", auth.SubjectContextKey))
+			ctx.AbortWithStatusJSON(http.StatusInternalServerError, utils.ErrJSON("could not find user ID in context"))
+			return
+		}
+
+		usr, ok := rusr.(uint)
+		if !ok {
+			if !ok {
+				ctx.Error(errors.New("could not coax user id into an integer"))
+				ctx.AbortWithStatusJSON(http.StatusInternalServerError, utils.ErrJSON("could not parse user ID"))
+				return
+			}
+		}
+
 		var params createCrossingDTO
 		if err := ctx.ShouldBind(&params); err != nil {
 			ctx.Error(err)
@@ -47,7 +66,7 @@ func createCrossing(db *gorm.DB, base string) gin.HandlerFunc {
 			When:        actualTime,
 			BorderCheck: borderCheck,
 			PapersCheck: papersCheck,
-		}, params.Country, params.Transport); err != nil {
+		}, params.Country, params.Transport, usr); err != nil {
 			ctx.Error(err)
 			ctx.AbortWithStatusJSON(http.StatusInternalServerError, utils.ErrJSON("couldn't create crossing"))
 			return

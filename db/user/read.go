@@ -5,11 +5,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func Authenticate(db *gorm.DB, username, password string) (e error) {
+func Authenticate(db *gorm.DB, username, password string) (u *models.User, e error) {
 	var user models.User
 
 	if err := db.Model(&models.User{}).Where("name = ?", username).First(&user).Error; err != nil {
-		return err
+		return nil, err
 	}
-	return user.Check(password)
+	return &user, user.Check(password)
 }
