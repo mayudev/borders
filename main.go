@@ -89,7 +89,7 @@ func main() {
 	}
 
 	static.Install(router.Group("/static"))
-	stats.Install(router.Group("/"), db)
+	stats.Install(router.Group("/"), db, appConfig.OpengraphTitle)
 	admin.Install(router.Group("/admin"), db)
 
 	go router.Run(appConfig.Addr())

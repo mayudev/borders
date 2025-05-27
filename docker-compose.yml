@@ -14,5 +14,6 @@ services:
       # these values are examples, with the default value set.
       # - SERVE_PORT=8080
       # - JWT_KEY_LENGTH=16
+      # - OG_TITLE="WHAT THE FUCK IS A SCHENGEN 🇩🇪🇩🇪🇩🇪🇩🇪"
     volumes:
       - ./data:/data:rw

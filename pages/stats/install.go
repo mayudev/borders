@@ -16,6 +16,6 @@ func Template(tmpl *template.Template) (err error) {
 	return
 }
 
-func Install(group *gin.RouterGroup, db *gorm.DB) {
-	group.GET("", show(db))
+func Install(group *gin.RouterGroup, db *gorm.DB, ogtitle string) {
+	group.GET("", show(db, ogtitle))
 }

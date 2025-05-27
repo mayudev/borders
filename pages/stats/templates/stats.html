@@ -2,6 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta property="og:title" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="Out of {{ .TotalCrossings }}, {{ .CrossingCheckPer}}% involved a border check." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Borders - Statistics</title>
     <link rel="stylesheet" href="/static/style/stats.css" />
@@ -16,7 +19,7 @@
           .TotalBorderChecks }} border checks. That's {{ printf "%.1f"
           .CrossingCheckPer }}%.<br />
           Out of those {{ .TotalBorderChecks }} border checks, {{ .TotalIdChecks
-          }} involved checking identification of the contributor to this page.
+          }} involved checking identification of the contributors of this page.
           That's {{ printf "%.1f" .CheckIDPer }}% of checks, or {{ printf "%.1f"
           .CrossingIdPer }}% of border crossings.
         </p>

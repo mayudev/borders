@@ -14,6 +14,7 @@ import (
 
 type statsObj struct {
 	crossing.Stats
+	OGTitle              string
 	CrossingCheckPer     float32
 	CheckIDPer           float32
 	CrossingIdPer        float32
@@ -23,7 +24,7 @@ type statsObj struct {
 	TransportLeaderboard []models.LeaderboardEntry[models.Transport]
 }
 
-func show(db *gorm.DB) gin.HandlerFunc {
+func show(db *gorm.DB, ogtitle string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		stats, err := crossing.GetStats(db)
 		if err != nil {
@@ -55,6 +56,7 @@ func show(db *gorm.DB) gin.HandlerFunc {
 			WorstTransportPer:    stats.WorstTransport.Ratio * 100,
 			CountryLeaderboard:   countryLeaderboard,
 			TransportLeaderboard: transportLeaderboard,
+			OGTitle:              ogtitle,
 		})
 	}
 }
