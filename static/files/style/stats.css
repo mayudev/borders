@@ -4,5 +4,7 @@
 
 .card {
     width: fit-content;
+    max-width: 90vw;
+    overflow-x: scroll;
     margin: auto;
 }
